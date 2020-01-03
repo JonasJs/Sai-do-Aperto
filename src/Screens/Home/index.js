@@ -1,5 +1,7 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import MapView, {Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
 
 import {Container, Text} from './styles';
 
@@ -44,18 +46,64 @@ const Home = ({navigation}) => {
     },
   ]);
 
+  const [mapLocation, setMapLocation] = useState({
+    center: {
+      latitude: 0,
+      longitude: 0,
+    },
+    zoom: 16,
+    pitch: 0,
+    altitude: 0,
+    heading: 0,
+  });
+
+  const [currentPosition, setCurrentPosition] = useState();
+
+  const getMyCurrentPosition = () => {
+    Geolocation.getCurrentPosition(
+      async info => {
+        const {latitude, longitude} = info.coords;
+        const geo = await Geocoder.from(latitude, longitude);
+
+        alert(geo.results[0].formatted_address);
+
+        if (geo.results.length > 0) {
+          const location = {
+            name: geo.results[0].formatted_address,
+            center: {
+              latitude,
+              longitude,
+            },
+            zoom: 16,
+            pitch: 0,
+            altitude: 0,
+            heading: 0,
+          };
+          setMapLocation(location);
+          setCurrentPosition;
+          location;
+        }
+      },
+      error => {
+        alert(error);
+      },
+    );
+  };
+
+  useEffect(() => {
+    Geocoder.init('AIzaSyDrHG4BLGyFyw62vRI50d_M745hKv983FI', {
+      language: 'pt-br',
+    });
+    getMyCurrentPosition();
+  }, []);
+
   return (
     <Container>
       <MapView
         ref={map}
         style={{flex: 1}}
         provider="google"
-        initialRegion={{
-          latitude: 45.52220671242907,
-          longitude: -122.6653281029795,
-          latitudeDelta: 0.04864195044303443,
-          longitudeDelta: 0.040142817690068,
-        }}>
+        camera={mapLocation}>
         {markers.map(({id, coordinate, title, description}) => {
           return (
             <Marker
