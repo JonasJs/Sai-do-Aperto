@@ -3,7 +3,17 @@ import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 
-import {Container, Text} from './styles';
+import {
+  Container,
+  Text,
+  PinMyPosition,
+  Modal,
+  Items,
+  AndressText,
+  DurationText,
+  DescriptionText,
+  Line,
+} from './styles';
 
 const Home = ({navigation}) => {
   const map = useRef();
@@ -29,10 +39,10 @@ const Home = ({navigation}) => {
     {
       id: 3,
       coordinate: {
-        latitude: 45.5230786,
-        longitude: -122.6701034,
+        latitude: -22.8675954,
+        longitude: -43.2841584,
       },
-      title: 'Third Best Place',
+      title: 'Third Best',
       description: 'This is the third best place in Portland',
     },
     {
@@ -57,15 +67,13 @@ const Home = ({navigation}) => {
     heading: 0,
   });
 
-  const [currentPosition, setCurrentPosition] = useState();
+  const [currentPosition, setCurrentPosition] = useState('');
 
   const getMyCurrentPosition = () => {
     Geolocation.getCurrentPosition(
       async info => {
         const {latitude, longitude} = info.coords;
         const geo = await Geocoder.from(latitude, longitude);
-
-        alert(geo.results[0].formatted_address);
 
         if (geo.results.length > 0) {
           const location = {
@@ -79,15 +87,25 @@ const Home = ({navigation}) => {
             altitude: 0,
             heading: 0,
           };
+
           setMapLocation(location);
-          setCurrentPosition;
-          location;
+          setCurrentPosition({
+            coordinate: {
+              latitude: 45.521016,
+              longitude: -122.6561917,
+            },
+            title: 'Fourth Best Place',
+            description: 'This is the fourth best place in Portland',
+          });
         }
       },
       error => {
         alert(error);
       },
     );
+  };
+  const onMarkerClick = env => {
+    alert(env);
   };
 
   useEffect(() => {
@@ -104,17 +122,44 @@ const Home = ({navigation}) => {
         style={{flex: 1}}
         provider="google"
         camera={mapLocation}>
-        {markers.map(({id, coordinate, title, description}) => {
+        {markers.map(({coordinate, title, description}, key) => {
           return (
             <Marker
-              key={id}
+              key={key}
               coordinate={coordinate}
-              title={title}
-              description={description}
+              onPress={() => onMarkerClick(title)}
             />
           );
         })}
+
+        <Marker
+          coordinate={{
+            latitude: mapLocation.center.latitude,
+            longitude: mapLocation.center.longitude,
+          }}>
+          <PinMyPosition />
+        </Marker>
+
+        {/* <Marker
+          coordinate={currentPosition.coordinate}
+          title={currentPosition.title}
+          description={currentPosition.description}
+        /> */}
       </MapView>
+      <Modal>
+        <Text>Banheiro Bom</Text>
+        <Items>
+          <AndressText>Rua antonio claudio</AndressText>
+          <DurationText>30min a pé</DurationText>
+        </Items>
+        <Line />
+        <DescriptionText>
+          Economic comfortable car, which lets you easily get around the city.
+          It has 5 seats, so you can take your colleagues for a ride! 150 horse
+          power and you will never miss a green light.
+        </DescriptionText>
+        <Text>Foto</Text>
+      </Modal>
     </Container>
   );
 };
