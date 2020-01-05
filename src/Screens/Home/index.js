@@ -122,7 +122,7 @@ const Home = ({navigation}) => {
   };
 
   useEffect(() => {
-    Geocoder.init('AIzaSyDrHG4BLGyFyw62vRI50d_M745hKv983FI', {
+    Geocoder.init('', {
       language: 'pt-br',
     });
     getMyCurrentPosition();
