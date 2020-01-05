@@ -11,13 +11,12 @@ export const Text = styled.Text`
   line-height: 25px;
   letter-spacing: 0.46px;
   color: #000000;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 `;
 
 export const Image = styled.Image`
-  width: 40px;
-  height: 40px;
-  background: red;
+  width: 100%;
+  height: 100%;
 `;
 export const PinMyPosition = styled.View`
   width: 20px;
@@ -26,7 +25,7 @@ export const PinMyPosition = styled.View`
   background: #3b48ee;
 `;
 
-export const Modal = styled.View`
+export const Modal = styled.Modal`
   width: 100%;
   height: 70%;
   background: #fff;
@@ -35,10 +34,31 @@ export const Modal = styled.View`
   text-align: left;
   padding: 20px;
 `;
+export const ModalContent = styled.View`
+  width: 100%;
+  height: 60%;
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  text-align: left;
+  padding: 20px;
+`;
+
+export const HeaderModal = styled.View`
+  flex-direction: row;
+`;
+
+export const ItemsDetails = styled.View`
+  flex-direction: column;
+`;
 
 export const Items = styled.View`
+  flex-direction: column;
+`;
+
+export const IconContainer = styled.View`
   flex-direction: row;
-  flex-wrap: wrap;
+  margin-bottom: 16px;
 `;
 
 export const AndressText = styled.Text`
@@ -48,6 +68,7 @@ export const AndressText = styled.Text`
   line-height: 20px;
   letter-spacing: 0.36px;
   color: #181f4d;
+  flex: 1;
 `;
 
 export const DurationText = styled.Text`
@@ -73,4 +94,11 @@ export const Line = styled.View`
   height: 2px;
   background: #e6e8f0;
   margin: 16px 0;
+`;
+export const AddBathroom = styled.View`
+  position: absolute;
+  bottom: 10;
+  right: 20;
+  background: #fff;
+  border-radius: 25;
 `;

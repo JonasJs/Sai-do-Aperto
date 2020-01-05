@@ -1,21 +1,25 @@
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-
-import HomeStack from './HomeStack';
+import {fromLeft} from 'react-navigation-transitions';
 
 //Screens
 import Preload from '../Screens/Preload';
+import Home from '../Screens/Home';
+import AddBathroom from '../Screens/AddBathroom';
 
 const MainStack = createStackNavigator(
   {
     Preload,
-    HomeStack,
+    Home,
+    AddBathroom,
+    //HomeStack,
   },
   {
     initialRouteName: 'Preload',
     defaultNavigationOptions: {
       header: null,
     },
+    transitionConfig: () => fromLeft(),
   },
 );
 

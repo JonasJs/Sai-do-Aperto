@@ -2,6 +2,8 @@ import React, {useRef, useState, useEffect} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
+import Icon from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
   Container,
@@ -13,6 +15,12 @@ import {
   DurationText,
   DescriptionText,
   Line,
+  ModalContent,
+  Image,
+  HeaderModal,
+  ItemsDetails,
+  IconContainer,
+  AddBathroom,
 } from './styles';
 
 const Home = ({navigation}) => {
@@ -68,6 +76,7 @@ const Home = ({navigation}) => {
   });
 
   const [currentPosition, setCurrentPosition] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const getMyCurrentPosition = () => {
     Geolocation.getCurrentPosition(
@@ -108,6 +117,10 @@ const Home = ({navigation}) => {
     alert(env);
   };
 
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   useEffect(() => {
     Geocoder.init('AIzaSyDrHG4BLGyFyw62vRI50d_M745hKv983FI', {
       language: 'pt-br',
@@ -119,7 +132,7 @@ const Home = ({navigation}) => {
     <Container>
       <MapView
         ref={map}
-        style={{flex: 1}}
+        style={modalVisible ? {height: '60%'} : {flex: 1}}
         provider="google"
         camera={mapLocation}>
         {markers.map(({coordinate, title, description}, key) => {
@@ -127,7 +140,7 @@ const Home = ({navigation}) => {
             <Marker
               key={key}
               coordinate={coordinate}
-              onPress={() => onMarkerClick(title)}
+              onPress={() => setModalVisible(true)}
             />
           );
         })}
@@ -139,35 +152,81 @@ const Home = ({navigation}) => {
           }}>
           <PinMyPosition />
         </Marker>
-
-        {/* <Marker
-          coordinate={currentPosition.coordinate}
-          title={currentPosition.title}
-          description={currentPosition.description}
-        /> */}
       </MapView>
-      <Modal>
-        <Text>Banheiro Bom</Text>
-        <Items>
-          <AndressText>Rua antonio claudio</AndressText>
-          <DurationText>30min a pé</DurationText>
-        </Items>
-        <Line />
-        <DescriptionText>
-          Economic comfortable car, which lets you easily get around the city.
-          It has 5 seats, so you can take your colleagues for a ride! 150 horse
-          power and you will never miss a green light.
-        </DescriptionText>
-        <Text>Foto</Text>
+
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <ModalContent>
+          <Icon
+            name="closecircle"
+            size={28}
+            color="#DCDEE5"
+            style={{textAlign: 'right', marginBottom: 8}}
+            onPress={() => closeModal()}
+          />
+          <Items>
+            <Text>Banheiro Bom e cheiroso</Text>
+            <ItemsDetails>
+              <IconContainer>
+                <Icon
+                  name="enviroment"
+                  size={20}
+                  color="#3D56F5"
+                  style={{marginRight: 8}}
+                />
+                <AndressText>{mapLocation.name}</AndressText>
+              </IconContainer>
+              <IconContainer>
+                <Icon
+                  name="clockcircle"
+                  size={20}
+                  color="#D1345B"
+                  style={{marginRight: 8}}
+                />
+                <DurationText>30min Andando</DurationText>
+              </IconContainer>
+              <IconContainer>
+                <MaterialIcons
+                  name="attach-money"
+                  size={20}
+                  color="#D1345B"
+                  style={{marginRight: 8}}
+                />
+                <DurationText>Grátis</DurationText>
+              </IconContainer>
+            </ItemsDetails>
+          </Items>
+          <Line />
+          <Text>Foto</Text>
+          <HeaderModal>
+            <Image
+              style={{width: 120, height: 180, marginRight: 16}}
+              source={{
+                uri:
+                  'https://cdn.leroymerlin.com.br/contents/banheiro_clean_e_com_personalidade_5a93_original.jpg',
+              }}
+            />
+            <DescriptionText style={{flex: 1}}>
+              Economic comfortable car, which lets you easily get around the
+              city. It has 5 seats, so you can take your colleagues for a ride!
+              150 horse power and you will never miss a green light.
+            </DescriptionText>
+          </HeaderModal>
+        </ModalContent>
       </Modal>
+
+      <AddBathroom>
+        <Icon
+          name="pluscircle"
+          size={50}
+          color="#FFBE0B"
+          backgroundColor="#fff"
+          onPress={() => navigation.navigate('AddBathroom')}
+        />
+      </AddBathroom>
     </Container>
   );
 };
 
-Home.navigationOptions = {
-  header: {
-    visible: false,
-  },
-};
+Home.navigationOptions = {};
 
 export default Home;

@@ -1,14 +1,14 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: 'AIzaSyDOzkTD3GlF5zREanrfnPHlf5HzP1ZnYio',
-  authDomain: 'appraidsgo.firebaseapp.com',
-  databaseURL: 'https://appraidsgo.firebaseio.com',
-  projectId: 'appraidsgo',
-  storageBucket: 'appraidsgo.appspot.com',
-  messagingSenderId: '193873921158',
-  appId: '1:193873921158:web:cd9bde6dea9e3e6338fd07',
-  measurementId: 'G-0MM1NDPRZV',
+  apiKey: 'AIzaSyD1nR1BRwuz5Jyil1JsfJYHzaZC-GsCef0',
+  authDomain: 'sai-do-aperto.firebaseapp.com',
+  databaseURL: 'https://sai-do-aperto.firebaseio.com',
+  projectId: 'sai-do-aperto',
+  storageBucket: 'sai-do-aperto.appspot.com',
+  messagingSenderId: '530758212666',
+  appId: '1:530758212666:web:a1d37f8638a24b9292a903',
+  measurementId: 'G-1FKZJVFCVM',
 };
 
 // Initialize Firebase
