@@ -8,7 +8,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   Container,
   Text,
-  PinMyPosition,
   Modal,
   Items,
   AndressText,
@@ -75,6 +74,15 @@ const Home = ({navigation}) => {
     heading: 0,
   });
 
+  const [markerLocation, setMarkerLocation] = useState({
+    name: '',
+    andress: '',
+    time: '',
+    price: '',
+    photo: '',
+    description: '',
+  });
+
   const [currentPosition, setCurrentPosition] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -92,9 +100,9 @@ const Home = ({navigation}) => {
               longitude,
             },
             zoom: 16,
-            pitch: 0,
-            altitude: 0,
-            heading: 0,
+            pitch: 10,
+            altitude: 10,
+            heading: 20,
           };
 
           setMapLocation(location);
@@ -113,8 +121,9 @@ const Home = ({navigation}) => {
       },
     );
   };
-  const onMarkerClick = env => {
-    alert(env);
+  const onMarkerClick = id => {
+    setModalVisible(true);
+    setMarkerLocation({name: markers[id].title});
   };
 
   const closeModal = () => {
@@ -122,7 +131,7 @@ const Home = ({navigation}) => {
   };
 
   useEffect(() => {
-    Geocoder.init('', {
+    Geocoder.init('AIzaSyDrHG4BLGyFyw62vRI50d_M745hKv983FI', {
       language: 'pt-br',
     });
     getMyCurrentPosition();
@@ -134,24 +143,18 @@ const Home = ({navigation}) => {
         ref={map}
         style={modalVisible ? {height: '60%'} : {flex: 1}}
         provider="google"
-        camera={mapLocation}>
-        {markers.map(({coordinate, title, description}, key) => {
+        camera={mapLocation}
+        showsUserLocation
+        loadingEnabled>
+        {markers.map(({coordinate, title, description, id}, key) => {
           return (
             <Marker
               key={key}
               coordinate={coordinate}
-              onPress={() => setModalVisible(true)}
+              onPress={() => onMarkerClick(id)}
             />
           );
         })}
-
-        <Marker
-          coordinate={{
-            latitude: mapLocation.center.latitude,
-            longitude: mapLocation.center.longitude,
-          }}>
-          <PinMyPosition />
-        </Marker>
       </MapView>
 
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -173,7 +176,7 @@ const Home = ({navigation}) => {
                   color="#3D56F5"
                   style={{marginRight: 8}}
                 />
-                <AndressText>{mapLocation.name}</AndressText>
+                <AndressText>{markerLocation.name}</AndressText>
               </IconContainer>
               <IconContainer>
                 <Icon
@@ -208,7 +211,8 @@ const Home = ({navigation}) => {
             <DescriptionText style={{flex: 1}}>
               Economic comfortable car, which lets you easily get around the
               city. It has 5 seats, so you can take your colleagues for a ride!
-              150 horse power and you will never miss a green light.
+              150 horse power and you will never miss a green light Economic
+              comfortable car.
             </DescriptionText>
           </HeaderModal>
         </ModalContent>

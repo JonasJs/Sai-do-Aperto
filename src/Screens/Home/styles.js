@@ -102,3 +102,10 @@ export const AddBathroom = styled.View`
   background: #fff;
   border-radius: 25;
 `;
+
+export const TextInput = styled.TextInput`
+  height: 50px;
+  background-color: #e7e8f6;
+  padding: 0 8px;
+  margin-bottom: 16px;
+`;
