@@ -2,6 +2,10 @@ import styled from 'styled-components/native';
 import {Dimensions} from 'react-native';
 const screenWidth = Math.round(Dimensions.get('window').width / 2 - 40);
 
+export const ScrollView = styled.ScrollView`
+  flex: 1;
+  background-color: #ffffff;
+`;
 export const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #ffffff;
@@ -87,4 +91,15 @@ export const ButtonsContainer = styled.View`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const Header = styled.TouchableOpacity`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ErrorText = styled.Text`
+  color: red;
+  margin: 14px 0 24px 0;
 `;

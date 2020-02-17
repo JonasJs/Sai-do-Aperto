@@ -3,9 +3,12 @@ import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {RNCamera} from 'react-native-camera';
+import firebase from '../../FirebaseConnection.js';
 
 import Input from '../../Components/Inputs';
 import ButtonCustom from '../../Components/ButtonCustom';
+
+import LeftArrow from '../../Assets/icons/LeftArrow';
 
 import {
   Container,
@@ -19,13 +22,15 @@ import {
   P,
   Title,
   ButtonsContainer,
+  Header,
+  ErrorText,
+  ScrollView,
 } from './styles';
 
 const AddBathroom = ({navigation}) => {
   const [photoTaken, setPhotoTaken] = useState({
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTekiIYJkVARYKvbxpTsCQ_0HVZJYhyi9Jhb01ADoWlDhgLARDY',
-    approved: true,
+    image: false,
+    approved: false,
   });
 
   const [ButtonToggle, setButtonToggle] = useState([
@@ -54,9 +59,14 @@ const AddBathroom = ({navigation}) => {
       active: false,
     },
   ]);
-  const [ButtonActivated, setButtonActivated] = useState();
+  const [ButtonActivated, setButtonActivated] = useState('');
 
-  const [Description, setDescription] = useState();
+  const [Description, setDescription] = useState('');
+  const [BathroomTitle, setBathroomTitle] = useState('');
+
+  const [CurrentPosition, setCurrentPosition] = useState('');
+
+  const [error, setError] = useState('');
 
   const photoApproved = () => {
     setPhotoTaken({
@@ -78,6 +88,7 @@ const AddBathroom = ({navigation}) => {
           setPhotoTaken({
             image: data.uri,
             approved: false,
+            base64: `data:image/png;base64,${data.base64}`,
           });
         })
         .catch(e => {
@@ -93,17 +104,12 @@ const AddBathroom = ({navigation}) => {
 
         if (geo.results.length > 0) {
           const location = {
-            name: geo.results[0].formatted_address,
-            center: {
+            coordinate: {
               latitude,
               longitude,
             },
-            zoom: 16,
-            pitch: 0,
-            altitude: 0,
-            heading: 0,
           };
-          //alert(JSON.stringify(location));
+          setCurrentPosition(location);
         }
       },
       error => {
@@ -125,7 +131,26 @@ const AddBathroom = ({navigation}) => {
   };
 
   const register = () => {
-    console.log(JSON.stringify(ButtonActivated));
+    if (BathroomTitle === '' || Description === '') {
+      setError('Preencha todos os campos.');
+    } else if (BathroomTitle.length < 7) {
+      setError('O titulo deve ter mais de 7 caracteres.');
+    } else if (Description.length < 10) {
+      setError('A Descrição deve ter mais de 10 caracteres.');
+    } else if (ButtonActivated === '') {
+      setError('Escola um dos Valores.');
+    } else {
+      setError('');
+      const Bathroom = firebase.database().ref('Bathrooms/');
+      const key = Bathroom.push().key;
+
+      Bathroom.child(key).set({
+        ...CurrentPosition,
+        title: BathroomTitle,
+        description: Description,
+        Image: photoTaken.base64,
+      });
+    }
   };
 
   useEffect(() => {
@@ -138,7 +163,7 @@ const AddBathroom = ({navigation}) => {
   }, []);
 
   return (
-    <Container>
+    <>
       {photoTaken.image ? (
         <>
           {!photoTaken.approved ? (
@@ -161,43 +186,59 @@ const AddBathroom = ({navigation}) => {
               </ButtonContainer>
             </>
           ) : (
-            <FormContainer>
-              <Title>Cadastro</Title>
-              <Input Label="Titulo:" />
-              <P style={{marginTop: 24}}>Selecione um valor:</P>
-              <DetailsContainer>
-                <Input Label="Titulo:" Type="textArea" />
-                <Image
-                  style={{
-                    width: 120,
-                    height: 180,
-                    marginLeft: 16,
-                  }}
-                  source={{uri: photoTaken.image}}
-                />
-              </DetailsContainer>
-              <P>Selecione um valor:</P>
-              <ButtonsContainer>
-                {ButtonToggle.map(({price, active}, index) => {
-                  return (
-                    <ButtonCustom
-                      Theme="toggle"
-                      Title={
-                        price === 'Free'
-                          ? price
-                          : Number(price)
-                              .toFixed(2)
-                              .replace('.', ',')
-                              .replace(/(\d)(?=(\d{3})+(?!\d))/g)
-                      }
-                      Active={active}
-                      onPress={() => selectButton(index)}
+            <ScrollView contentInsetAdjustmentBehavior="automatic">
+              <Container>
+                <FormContainer>
+                  <Header onPress={() => navigation.navigate('Home')}>
+                    <LeftArrow height={32} width={32} />
+                    <Title>Cadastro</Title>
+                  </Header>
+                  <Input
+                    Label="Titulo:"
+                    Value={BathroomTitle}
+                    onChangeText={text => setBathroomTitle(text)}
+                  />
+                  <P style={{marginTop: 24}}>Descrição do banheiro:</P>
+                  <DetailsContainer>
+                    <Input
+                      Type="textArea"
+                      Value={Description}
+                      onChangeText={text => setDescription(text)}
                     />
-                  );
-                })}
-              </ButtonsContainer>
-              <ButtonCustom Title="Enviar" onPress={() => register()} />
-            </FormContainer>
+                    <Image
+                      style={{
+                        width: 120,
+                        height: 180,
+                        marginLeft: 16,
+                      }}
+                      source={{uri: photoTaken.image}}
+                    />
+                  </DetailsContainer>
+                  <P>Selecione um valor:</P>
+                  <ButtonsContainer>
+                    {ButtonToggle.map(({price, active}, index) => {
+                      return (
+                        <ButtonCustom
+                          Theme="toggle"
+                          Title={
+                            price === 'Free'
+                              ? price
+                              : `R$ ${Number(price)
+                                  .toFixed(2)
+                                  .replace('.', ',')
+                                  .replace(/(\d)(?=(\d{3})+(?!\d))/g)} `
+                          }
+                          Active={active}
+                          onPress={() => selectButton(index)}
+                        />
+                      );
+                    })}
+                  </ButtonsContainer>
+                  {error !== '' && <ErrorText>{error}</ErrorText>}
+                  <ButtonCustom Title="Enviar" onPress={() => register()} />
+                </FormContainer>
+              </Container>
+            </ScrollView>
           )}
         </>
       ) : (
@@ -219,7 +260,7 @@ const AddBathroom = ({navigation}) => {
           </CapturePhotoButton>
         </RNCamera>
       )}
-    </Container>
+    </>
   );
 };
 

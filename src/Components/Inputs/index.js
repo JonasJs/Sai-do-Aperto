@@ -28,6 +28,8 @@ const Input = ({Type, Label, Value, Editable, onChangeText, placeholder}) => {
           placeholderTextColor="grey"
           maxLength={208}
           multiline={true}
+          value={Value}
+          onChangeText={onChangeText}
         />
       )}
     </>

@@ -221,8 +221,8 @@ const Home = ({navigation}) => {
       <AddBathroom>
         <Icon
           name="pluscircle"
-          size={50}
-          color="#FFBE0B"
+          size={70}
+          color="#5D39DB"
           backgroundColor="#fff"
           onPress={() => navigation.navigate('AddBathroom')}
         />
