@@ -1,12 +1,16 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import { ThemeProvider } from 'styled-components'
 import { theme } from './src/styles/themes/default';
 
+import { useFonts, Roboto_300Light, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold, Roboto_900Black } from '@expo-google-fonts/roboto'
+
 export default function App() {
+  const [fontsLoader] = useFonts({ Roboto_300Light, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold, Roboto_900Black})
+
   return (
     <ThemeProvider theme={theme}>
-      <Text>Hello World</Text>
+      {fontsLoader ? <Text>Hello World</Text> : <ActivityIndicator/>}
     </ThemeProvider>
   );
 }
