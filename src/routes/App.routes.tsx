@@ -27,31 +27,9 @@ export function AppRoutes() {
           backgroundColor: theme.colors.white,
         },
         tabBarActiveTintColor: theme.colors.brand_500,
-        tabBarInactiveTintColor: theme.colors.gray_500,
+        tabBarInactiveTintColor: theme.colors.gray_50,
       }}>
-      {/* <Screen 
-        name="Adicionar"
-        component={Home}
-        plus
-        options={{
-          tabBarLabel: 'Consultas',
-          tabBarIcon: ({ color, size }) => (
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                backgroundColor: theme.colors.brand_500,
-                borderRadius: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: Platform.OS == "android" ? 30 : 10
-              }}
-            >
-              <Feather name="plus" color={theme.colors.white} size={size} />
-            </View>
-          ),
-        }}
-      /> */}
+
 
       <Screen 
         name="listagem"

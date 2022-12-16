@@ -55,7 +55,6 @@ export function Home() {
               heading: 20,
             }}
           />
-
         </S.Content>
         
       )}

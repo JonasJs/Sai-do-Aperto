@@ -14,16 +14,15 @@ export function Preload() {
   const navigation = useNavigation();
 
   useEffect(() => {
-
     async function getBathroomsData() {
 
       const data = await getBathrooms();
 
       console.log(data);
+      navigation.navigate("app");
     }
 
     getBathroomsData();
-    // navigation.navigate("app");
   }, []);
   
   return (
