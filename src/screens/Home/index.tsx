@@ -28,7 +28,6 @@ export function Home() {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location)
     })();
   }, []);
 
