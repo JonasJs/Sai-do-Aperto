@@ -3,6 +3,11 @@ export declare global {
     interface RootParamList {
       preload: any;
       app: any;
+      auth: any,
+      signIn: any,
+      signUp: any,
+      home: any,
+      listing: any,
     }
   }
 }
