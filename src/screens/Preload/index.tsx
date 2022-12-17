@@ -27,14 +27,13 @@ export function Preload() {
       try {
         
         const uid = await isLoggedUser();
-        console.log("isLoggedUser => ", uid);
         if(uid) {
           await loadUser(String(uid));
         }
   
         navigation.navigate("app")
       } catch (error) {
-        // BackHandler.exitApp();
+        BackHandler.exitApp();
       }
     }
 

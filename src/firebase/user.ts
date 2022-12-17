@@ -33,7 +33,6 @@ export async function getUser(uid: string) {
     return data;
 
   } catch (error) {
-    console.log(error);
     throw new Error("Ops!, Ocorreu um error.");
   }
 }
@@ -99,7 +98,6 @@ export async function createUser({email, password, data}: ICreateUser) {
     return dataCollection;
 
   } catch (error: any) {
-    console.log(error);
     if(error.code === "auth/email-already-in-use") {
       throw new Error("Usuário já cadastrado encontrado!");
     }

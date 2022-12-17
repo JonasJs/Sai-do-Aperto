@@ -1,10 +1,14 @@
 import React from 'react';
+import { showMessage } from "react-native-flash-message";
 
 // firbase 
 import { createUser } from '../../firebase/user';
 
 // Navigation
 import { useNavigation } from "@react-navigation/native";
+
+// Hooks
+import { useAuth } from '../../context/auth';
 
 // Utils
 import { Masks } from 'react-native-mask-input';
@@ -33,7 +37,17 @@ interface IFormData {
   confirmPassword: string;
 };
 
+interface IUser {
+  email: string;
+  name: string;
+  phone: string;
+  uid: string;
+
+}
+
 export function SignUp() {
+  const { loadUser } = useAuth();
+
   const navigation = useNavigation();
 
   const {
@@ -54,11 +68,17 @@ export function SignUp() {
           name,
           phone
         }
-      });
+      }) as IUser
 
-      console.log(user);
+      await loadUser(user.uid);
+      navigation.navigate("home");
+
     } catch (error) {
-      console.log(error);
+      showMessage({
+        message:  'Usuario já cadastrado',
+        description: "Tente Novamente!",
+        type: "warning",
+      });
     }
   }
 
