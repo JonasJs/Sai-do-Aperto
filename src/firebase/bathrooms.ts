@@ -8,7 +8,6 @@ export async function getBathrooms() {
     const snapshot = await ref.get();
 
     const data = snapshot.docs.map((doc) => doc.data());
-    
     return data;
 
   } catch (error) {

@@ -31,6 +31,17 @@ export function AppRoutes() {
       initialRouteName="home"
       screenOptions={{
         headerShown: false,
+        headerStyle: {
+          backgroundColor: theme.colors.brand_500,
+        },
+        headerTitleStyle: {
+          fontFamily: theme.font.medium,
+          color: theme.colors.white,
+          fontSize: 16,
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: theme.colors.white,
+
         tabBarStyle: {
           height: 60,
           paddingHorizontal: 20,
@@ -42,10 +53,11 @@ export function AppRoutes() {
       }}>
 
       <Screen 
-        name="listing"
+        name="BANHEIROS PRÓXIMOS"
         component={Listing}
         options={{
-          tabBarLabel: 'Listagem',
+          headerShown: true,
+          tabBarLabel: 'listing',
           tabBarIcon: ({ color, size }) => (
             <Feather name="list" color={color} size={size} />
           ),

@@ -1,32 +1,39 @@
 import { useState } from 'react';
+
+//libs
 import StarRating from 'react-native-star-rating-widget'
-import { priceFormatter } from '../../ultils/formater';
-import * as S from './styles'
 import FeatherIcons from "@expo/vector-icons/Feather"
 
-interface CardBigType {
-  image: string;
-  amountImages: number;
-  title: string;
-  address: string;
-  price: number;
-}
+// ULtils
+import { priceFormatter } from '../../ultils/formater';
 
+// Interfaces
+import { IBathrooms } from '../../screens/Listing';
+
+// Styles
+import * as S from './styles'
 interface CardBigProps {
-  data: CardBigType
+  data: IBathrooms
 }
 
 export function CardBig({data}:CardBigProps) {
   const [rating, setRating] = useState(0)
 
+  function currencyFormat() {
+    const price = parseInt(data.price)
+
+    return 'R$ ' + '' + price.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, ' $1,')
+ }
+
+ const priceFormatter = currencyFormat()
   return (
     <S.CardBigContainer>
       <S.ContainerImage>
         <S.ImageCard source={{
-          uri: data.image
+          uri: data.photos[0]
         }} resizeMode="cover"/>
         <S.AmountImages>
-          <S.TextAmountImage>{data.amountImages}</S.TextAmountImage>
+          <S.TextAmountImage>{data.photos.length}</S.TextAmountImage>
           <FeatherIcons name='image' size={20} color="#fff"/>
         </S.AmountImages>
       </S.ContainerImage>
@@ -43,12 +50,12 @@ export function CardBig({data}:CardBigProps) {
           <S.Title>{data.title}</S.Title>
           <S.BoxAndrees>
             <FeatherIcons name='map-pin' size={20} color="#9DACBA"/>
-            <S.Address>{data.address}</S.Address>
+            <S.Address>{data.location.latitude}</S.Address>
           </S.BoxAndrees>
           
         </S.Info>
         <S.BoxPrice>
-          <S.Price>{priceFormatter.format(data.price)}</S.Price>
+          <S.Price>{priceFormatter}</S.Price>
         </S.BoxPrice>
       </S.ContentInfos>
     </S.CardBigContainer>

@@ -23,7 +23,6 @@ import { Input } from "../../components/Input";
 // Image
 import Logo from "../../assets/logo.svg";
 
-
 // Styles
 import * as S from "./styles";
 
