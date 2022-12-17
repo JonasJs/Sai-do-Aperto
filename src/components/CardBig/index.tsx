@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { View, Text } from 'react-native'
-import { MapPin, Image } from 'react-native-feather'
 import StarRating from 'react-native-star-rating-widget'
 import { priceFormatter } from '../../ultils/formater';
 import * as S from './styles'
+import FeatherIcons from "@expo/vector-icons/Feather"
 
 interface CardBigType {
   image: string;
@@ -28,7 +27,7 @@ export function CardBig({data}:CardBigProps) {
         }} resizeMode="cover"/>
         <S.AmountImages>
           <S.TextAmountImage>{data.amountImages}</S.TextAmountImage>
-          <Image width={20} stroke="#fff"/>
+          <FeatherIcons name='image' size={20} color="#fff"/>
         </S.AmountImages>
       </S.ContainerImage>
      
@@ -43,7 +42,7 @@ export function CardBig({data}:CardBigProps) {
           />
           <S.Title>{data.title}</S.Title>
           <S.BoxAndrees>
-            <MapPin width={20} stroke="#9DACBA"/>
+            <FeatherIcons name='map-pin' size={20} color="#9DACBA"/>
             <S.Address>{data.address}</S.Address>
           </S.BoxAndrees>
           
