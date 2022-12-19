@@ -14,4 +14,14 @@ export const Content = styled.View`
 
 export const Map = styled(MapView)`
   flex: 1;
+
+  position: relative;
 `;
+
+export const Bathroom = styled.View`
+  width: 100%;
+
+  position: absolute;
+  bottom: 16px;
+
+`

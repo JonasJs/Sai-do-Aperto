@@ -2,12 +2,33 @@
 import React, { useState, useEffect } from "react";
 import { Linking, Alert } from 'react-native';
 import * as Location from 'expo-location';
+import {getBathrooms} from '../../firebase/bathrooms'
 
 // Styles
 import * as S from "./styles";
 
+// Components
+import { CardMap } from "../../components/CardMap";
+
+// Interfaces
+interface Bathroom {
+  image: string;
+  amountImages: number;
+  title: string;
+  address: string;
+  price: number;
+}
+
+
 export function Home() {
   const [location, setLocation] = useState<Location.LocationObject>();
+  const [listBathrooms, setListBathrooms] = useState<Bathroom[]>([]);
+
+  async function fetchBathrooms() {
+    const response = await getBathrooms() as Bathroom[] 
+    setListBathrooms(response)
+    console.log(response)
+  }
 
   useEffect(() => {
     (async () => {
@@ -28,6 +49,8 @@ export function Home() {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+
+      fetchBathrooms()
     })();
   }, []);
 
@@ -54,6 +77,9 @@ export function Home() {
               heading: 20,
             }}
           />
+          <S.Bathroom>
+            <CardMap/>
+          </S.Bathroom>
         </S.Content>
         
       )}
