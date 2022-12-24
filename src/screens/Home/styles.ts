@@ -17,11 +17,3 @@ export const Map = styled(MapView)`
 
   position: relative;
 `;
-
-export const Bathroom = styled.View`
-  width: 100%;
-
-  position: absolute;
-  bottom: 16px;
-
-`

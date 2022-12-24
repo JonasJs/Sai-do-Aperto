@@ -77,9 +77,6 @@ export function Home() {
               heading: 20,
             }}
           />
-          <S.Bathroom>
-            <CardMap/>
-          </S.Bathroom>
         </S.Content>
         
       )}
