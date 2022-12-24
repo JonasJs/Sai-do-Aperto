@@ -2,13 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Linking, Alert } from 'react-native';
 import * as Location from 'expo-location';
-import {getBathrooms} from '../../firebase/bathrooms'
+import { getBathrooms } from '../../firebase/bathrooms'
 
 // Styles
 import * as S from "./styles";
-
-// Components
-import { CardMap } from "../../components/CardMap";
 
 // Interfaces
 interface Bathroom {
