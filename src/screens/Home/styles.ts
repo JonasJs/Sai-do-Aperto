@@ -14,4 +14,6 @@ export const Content = styled.View`
 
 export const Map = styled(MapView)`
   flex: 1;
+
+  position: relative;
 `;
